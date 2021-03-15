@@ -1,0 +1,11 @@
+vendor
+.idea
+go.sum
+logs
+s
+main
+snapshot
+conf/*.json
+dist
+installer
+server.exe
