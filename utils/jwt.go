@@ -2,7 +2,6 @@ package utils
 
 import (
 	"errors"
-	"net/http"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -14,10 +13,17 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-const TokenExpiresDuration = time.Hour * 2
+
 var CustomSecret = []byte("memo")
 
-func GenerToken(id uint) (string, error) {
+func GenerToken(id uint, platform string) (string, error) {
+	var TokenExpiresDuration time.Duration
+	if platform == "mobile" {
+		TokenExpiresDuration = time.Hour * 24 * 7 
+	} else {
+		TokenExpiresDuration = time.Hour * 6
+	}
+	 
 	c := Claims{
 		id,
 		jwt.StandardClaims{
@@ -51,8 +57,9 @@ func Auth(c *gin.Context) {
 	claims, err := ParseToken(token)
 
 	if (err != nil) {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message":  err.Error(),
+		c.JSON(200, gin.H{
+			"code": 50010,
+			"message":  "token异常",
 		})
 		c.Abort()
 		return

@@ -15,7 +15,8 @@ func Register(c *gin.Context) {
 	err := c.ShouldBind(&u)
 
 	if (err != nil) {
-		c.JSON(http.StatusBadRequest, gin.H{
+		c.JSON(http.StatusOK, gin.H{
+			"code": 422,
 			"message": err.Error(),
 		})
 		return
@@ -26,6 +27,7 @@ func Register(c *gin.Context) {
 	dbx.DB.Create(&u)
 
 	c.JSON(http.StatusOK, gin.H{
+		"code": 0,
 		"message": "注册",
 	})
 }

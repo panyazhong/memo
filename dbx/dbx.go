@@ -25,6 +25,7 @@ func SetMysqlDb() {
 	db.AutoMigrate(
 		&model.UserInfo{},
 		&model.MemoInfo{},
+		&model.RoleInfo{},
 	)
 
 	DB = db
