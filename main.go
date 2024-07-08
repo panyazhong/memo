@@ -10,7 +10,7 @@ import (
 func main() {
 	r := gin.Default()
 
-	dbx.SetMysqlDb()
+	dbx.InitMysqlDb()
 	router.SetView(r)
 	r.Run(":8888")
 }

@@ -10,16 +10,19 @@ import (
 )
 
 type Claims struct {
-	Id uint `json:"user_id"`
+	Openid     string `json:"openid"`
+	SessionKey string `json:"session_key"`
 	jwt.StandardClaims
 }
 
-const TokenExpiresDuration = time.Hour * 2
+const TokenExpiresDuration = time.Hour * 24 * 365
+
 var CustomSecret = []byte("memo")
 
-func GenerToken(id uint) (string, error) {
+func GenerToken(openid, session_key string) (string, error) {
 	c := Claims{
-		id,
+		openid,
+		session_key,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(TokenExpiresDuration).Unix(),
 		},
@@ -29,12 +32,12 @@ func GenerToken(id uint) (string, error) {
 	return token.SignedString(CustomSecret)
 }
 
-func ParseToken(tokenString string) (*Claims, error){
+func ParseToken(tokenString string) (*Claims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(tokenSting *jwt.Token) (interface{}, error) {
 		return CustomSecret, nil
 	})
 
-	if (err != nil) {
+	if err != nil {
 		return nil, err
 	}
 
@@ -50,14 +53,14 @@ func Auth(c *gin.Context) {
 
 	claims, err := ParseToken(token)
 
-	if (err != nil) {
+	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message":  err.Error(),
+			"message": err.Error(),
 		})
 		c.Abort()
 		return
 	}
 
-	c.Set("user_id", claims.Id)
+	c.Set("openid", claims.Openid)
 	c.Next()
 }

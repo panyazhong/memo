@@ -11,20 +11,24 @@ import (
 
 var DB *gorm.DB
 
-func SetMysqlDb() {
+func InitMysqlDb() {
 	database := config.NewDefaultConf()
 
-	con := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s&parseTime=True&loc=Local", database.User, database.Password, database.Host, database.Port,database.DbName, database.Charset)
+	dns := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=%s&parseTime=True&loc=Local&timeout=%s", database.User, database.Password, database.Host, database.Port, database.DbName, database.Charset, database.Timeout)
 
-	db, err := gorm.Open(mysql.Open(con), &gorm.Config{})
+	fmt.Println(dns)
+	db, err := gorm.Open(mysql.Open(dns), &gorm.Config{})
 
-	if (err != nil) {
+	if err != nil {
 		panic(err)
 	}
-
 	db.AutoMigrate(
 		&model.UserInfo{},
 		&model.MemoInfo{},
+		&model.MenuClassify{},
+		&model.Menu{},
+		&model.Order{},
+		&model.OrderDetail{},
 	)
 
 	DB = db
