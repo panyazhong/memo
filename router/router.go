@@ -14,6 +14,8 @@ func SetView(r *gin.Engine) {
 
 	setOrderRoute(publicAPI)
 
+	SetFieldType(publicAPI)
+
 	// authAPI := r.Group("/api")
 	// authAPI.Use(utils.Auth)
 	// memo.SetMemoRoute(authAPI)

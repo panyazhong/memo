@@ -24,7 +24,7 @@ func InitMysqlDb() {
 	}
 	db.AutoMigrate(
 		&model.UserInfo{},
-		&model.MemoInfo{},
+		// &model.MemoInfo{},
 		&model.MenuClassify{},
 		&model.Menu{},
 		&model.Order{},
