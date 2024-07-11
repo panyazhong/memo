@@ -9,4 +9,5 @@ type OrderDetail struct {
 	Price       float32 `gorm:"type:float"`
 	ActualPrice float32 `gorm:"type:float"`
 	Num         int     `gorm:"type:int"`
+	Remark      string  `gorm:"type:varchar(64)"`
 }

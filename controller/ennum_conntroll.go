@@ -13,6 +13,7 @@ type FieldTypeItem struct {
 
 type FieldTypeMapItem struct {
 	Label string          `json:"label"`
+	Value string        `json:"value"`
 	Items []FieldTypeItem `json:"items"`
 }
 
